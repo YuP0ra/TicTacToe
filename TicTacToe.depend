@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1515355152 source:c:\users\abdel-aziz\documents\codeblocks\tictactoe\main.cpp
+	<iostream>
+	"taco_class.cpp"
+
+1515359204 c:\users\abdel-aziz\documents\codeblocks\tictactoe\taco_class.cpp
+
+1515359273 source:c:\users\abdel-aziz\documents\codeblocks\tictactoe\taco_class.cpp
+
