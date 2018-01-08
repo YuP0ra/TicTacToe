@@ -1,20 +1,20 @@
 class Tico
 {   private:
-        char *evMatrix, *evDiagns, *wnSeq;
-        int I, N, W, evMatrix_size, evDiagns_size, seq_size;
+        short *evMatrix, *evDiagns, *wnSeq;
+        int I, N, W, evMatrix_size, evDiagns_size;
 
     public:
         Tico(int row_size, int win_size)
         {
+            I = 0;
             N = row_size;
             W = win_size;
             evMatrix_size = 4 * N;
-            seq_size = 1 + ((N * N) / 2);
-            evDiagns_size = 1 + 2 * (row_size - win_size);
+            evDiagns_size = 4 * (1 + 2 * (row_size - win_size));
 
-            wnSeq = new char[seq_size];
-            evMatrix = new char[evMatrix_size];
-            evDiagns = new char[evDiagns_size];
+            wnSeq = new short[N * N];
+            evMatrix = new short[evMatrix_size];
+            evDiagns = new short[evDiagns_size];
         }
 
         void clearAllMatrix()
@@ -27,80 +27,76 @@ class Tico
             for(int i= 0; i< evDiagns_size; i++)
                 evDiagns[i] = 0;
 
-            for(int i= 0; i< seq_size; i++)
+            for(int i= 0; i< N * N; i++)
                 wnSeq[i] = 0;
         }
 
-        int updateBoard(char* board, int pos, int color)
+        int updateBoard(short* board, int pos, int color)
         {
-            wnSeq[I++] = char(pos);
+            wnSeq[I++] = pos;
 
             int x = pos % N;
             int y = pos / N;
-            int t = color > 0 ? 1 : 2;
+            int t = color > 0 ? 0 : 1;
 
-            int x_m_p = t * x;
-            int y_m_p = (2 * N) + (t * y);
+            int matrix_row_pos = ((0 + t) * N) + y;
+            int matrix_col_pos = ((2 + t) * N) + x;
 
-            evMatrix[x_m_p]++;
-            evMatrix[y_m_p]++;
+            board[pos] = color;
 
-            if(evMatrix[x_m_p] >= N){
-                evMatrix[x_m_p]--;
+            evMatrix[matrix_row_pos]++;
+            evMatrix[matrix_col_pos]++;
 
-                if (evRow(board, x) != 0)
+            if(evMatrix[matrix_row_pos] >=  W){
+                evMatrix[matrix_row_pos]--;
+
+                if (evRow(board, y))
                     return 1;
             }
 
-            if(evMatrix[y_m_p] >= N){
-                evMatrix[y_m_p]--;
+            if(evMatrix[matrix_col_pos] >= W){
+                evMatrix[matrix_col_pos]--;
 
-                if (evCol(board, y) != 0)
+                if (evCol(board, x))
                     return 1;
             }
 
             return 0;
         }
 
-        char *getWinSeq(){
+        short *getWinSeq(){
             return wnSeq;
         }
 
 
     private:
-        int evRow(char* board, int row)
+        bool evRow(short* board, int row)
         {
             int total_sum;
-
             for(int i=0; i < (N - W + 1); i++){
                 total_sum = 0;
 
-                for(int j=i; i < W; j++)
-                    total_sum += board[N * row + j];
+                for(int j=0; j < W; j++)
+                    total_sum += board[N * row + i + j];
 
                 if(total_sum == W || total_sum == -W)
-                    return 1;
-
+                    return true;
             }
-
-            return 0;
+            return false;
         }
 
-        int evCol(char* board, int col)
+        bool evCol(short* board, int col)
         {
             int total_sum;
-
             for(int i=0; i < (N - W + 1); i++){
                 total_sum = 0;
 
-                for(int j=i; i < W; j++)
-                    total_sum += board[N * j + col];
+                for(int j=0; j < W; j++)
+                    total_sum += board[N * (i + j) + col];
 
                 if(total_sum == W || total_sum == -W)
-                    return 1;
-
+                    return true;
             }
-
-            return 0;
+            return false;
         }
 };
