@@ -47,7 +47,7 @@ class Tico
             evMatrix[matrix_row_pos]++;
             evMatrix[matrix_col_pos]++;
 
-            if(evMatrix[matrix_row_pos] >=  W){
+            if(evMatrix[matrix_row_pos] >= W){
                 evMatrix[matrix_row_pos]--;
 
                 if (evRow(board, y))
@@ -59,6 +59,34 @@ class Tico
 
                 if (evCol(board, x))
                     return 1;
+            }
+
+            int dif_a = x > y ? x - y : y - x;
+            int X = N - x - 1;
+            int dif_b = X > y ? X - y : y - X;
+
+            if(dif_a <= N - W){
+                int diag_a_pos = (0 + t) * (N - W) + ((N - W) + dif_a);
+                evDiagns[diag_a_pos]++;
+
+                if(evDiagns[diag_a_pos] >= W){
+                    evDiagns[diag_a_pos]--;
+
+                    if(evDiagA(board, x - y))
+                        return 1;
+                }
+            }
+
+            if(dif_b <= N - W){
+                int diag_b_pos = (2 + t) * (N - W) + ((N - W) + dif_b);
+                evDiagns[diag_b_pos]++;
+
+                if(evDiagns[diag_b_pos] >= W){
+                    evDiagns[diag_b_pos]--;
+
+                    if(evDiagB(board, X - y))
+                        return 1;
+                }
             }
 
             return 0;
@@ -93,6 +121,36 @@ class Tico
 
                 for(int j=0; j < W; j++)
                     total_sum += board[N * (i + j) + col];
+
+                if(total_sum == W || total_sum == -W)
+                    return true;
+            }
+            return false;
+        }
+
+         bool evDiagA(short* board, int offset)
+        {
+            int total_sum;
+            for(int i=0; i < (N - W + 1); i++){
+                total_sum = 0;
+
+                for(int j=0; j < W; j++)
+                    total_sum += board[((i + j) * N) + i + j + offset];
+
+                if(total_sum == W || total_sum == -W)
+                    return true;
+            }
+            return false;
+        }
+
+         bool evDiagB(short* board, int offset)
+        {
+            int total_sum;
+            for(int i=0; i < (N - W + 1); i++){
+                total_sum = 0;
+
+                for(int j=0; j < W; j++)
+                    total_sum += board[((i + j) * N) + N - 1 -  i - j - offset];
 
                 if(total_sum == W || total_sum == -W)
                     return true;

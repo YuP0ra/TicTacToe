@@ -1,9 +1,10 @@
 # depslib dependency file v1.0
-1515382815 source:c:\users\abdel-aziz\documents\codeblocks\tictactoe\main.cpp
+1515393911 source:c:\users\abdel-aziz\documents\codeblocks\tictactoe\main.cpp
+	<algorithm>
 	<iostream>
 	"taco_class.cpp"
 
-1515382869 c:\users\abdel-aziz\documents\codeblocks\tictactoe\taco_class.cpp
+1515394241 c:\users\abdel-aziz\documents\codeblocks\tictactoe\taco_class.cpp
 
-1515382869 source:c:\users\abdel-aziz\documents\codeblocks\tictactoe\taco_class.cpp
+1515394241 source:c:\users\abdel-aziz\documents\codeblocks\tictactoe\taco_class.cpp
 
